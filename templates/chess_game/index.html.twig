@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ChessGame index{% endblock %}
+
+{% block stylesheets %}
+<style>
+
+    .finished {
+        text-align: center;
+        padding: 1rem;
+        background-color: pink;
+    }
+
+    .scheduled {
+        text-align: center;
+        padding: 1rem;
+        background-color: orange;
+    }
+
+    .playing {
+        text-align: center;
+        padding: 1rem;
+        background-color: lightgreen;
+    }
+</style>
+{% endblock %}
+
+
+{% block body %}
+
+    <h1>ChessGame index : {{ today|date("d-m-Y = l F d Y ") }}</h1>
+
+    <a class="btn btn-primary" href="{{ path('chess_game_date_decrement') }}" role="button">date--</a>
+    <a class="btn btn-primary" href="{{ path('chess_game_date_today') }}" role="button">date = today</a>
+    <a class="btn btn-primary" href="{{ path('chess_game_date_increment') }}" role="button">date++</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>StartDateTime</th>
+                <th>Player 1</th>
+                <th>Player 2</th>
+                <th>Status</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for chess_game in chess_games %}
+            <tr>
+                <td>{{ chess_game.id }}</td>
+                <td>{{ chess_game.startDateTime|date('d-m-Y') }}</td>
+                <td>WHITE: {{ chess_game.player1White}}</td>
+                <td>BLACK: {{ chess_game.player2Black}}</td>
+                <td>
+
+                    {% set today = app.session.get("today") %}
+
+                    {# ----------- if completed is TRUE, status = completed -------- #}
+                    {% if chess_game.completed %}
+                        <div class="finished">
+                            FINISHED
+                            <br>
+                            {{ chess_game.result }}
+                        </div>
+                    {% else %}
+                        {# ----------- if today BEFORE startDate then status = scheduled -------- #}
+                        {% if date(today) < date(chess_game.startDateTime) %}
+                            <div class="scheduled">SCHEDULED (for future  date)</div>
+                        {% else %}
+                            {# ----------- else game must be = playing -------- #}
+                            <div class="playing">PLAYING (started and not finished)</div>
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('chess_game_show', {'id': chess_game.id}) }}">show</a>
+                    <a href="{{ path('chess_game_edit', {'id': chess_game.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('chess_game_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ChessGame{% endblock %}
+
+{% block body %}
+    <h1>ChessGame</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ chess_game.id }}</td>
+            </tr>
+            <tr>
+                <th>StartDateTime</th>
+                <td>{{ chess_game.startDateTime ? chess_game.startDateTime|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Completed</th>
+                <td>{{ chess_game.completed ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('chess_game_index') }}">back to list</a>
+
+    <a href="{{ path('chess_game_edit', {'id': chess_game.id}) }}">edit</a>
+
+    {{ include('chess_game/_delete_form.html.twig') }}
+{% endblock %}

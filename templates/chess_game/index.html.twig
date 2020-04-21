@@ -36,6 +36,9 @@
     <a class="btn btn-primary" href="{{ path('chess_game_date_today') }}" role="button">date = today</a>
     <a class="btn btn-primary" href="{{ path('chess_game_date_increment') }}" role="button">date++</a>
 
+
+    {# -------- only show comment form to a logged in user ----------------#}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
     <hr>
     <form method="post"
           action="{{ path('chess_game_comment') }}"
@@ -46,6 +49,8 @@
         <input type="submit">
     </form>
     <hr>
+    {% endif %}
+    {# -------- only show form to a logged in user ----------------#}
 
     <table class="table">
         <thead>

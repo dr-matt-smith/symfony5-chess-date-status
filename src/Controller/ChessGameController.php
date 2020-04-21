@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/chessgame")
@@ -29,6 +30,7 @@ class ChessGameController extends AbstractController
 
     /**
      * @Route("/comment", name="chess_game_comment", methods={"POST"})
+     * @IsGranted("ROLE_USER")
      */
     public function processComment(): Response
     {

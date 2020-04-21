@@ -35,10 +35,10 @@
                 <a href="{{ url('aboutpage') }}">about</a>
             </li>
             <li>
-                <a href="{{ url('chess_game_index') }}">chess games</a>
+                <a href="{{ url('chess_game_index') }}">chess game - list of games</a>
             </li>
             <li>
-                <a href="{{ url('game_result_index') }}">game result CRUD</a>
+                <a href="{{ url('game_result_index') }}">chess game - game result CRUD</a>
             </li>
             {% if is_granted('ROLE_ADMIN') %}
                 <li>

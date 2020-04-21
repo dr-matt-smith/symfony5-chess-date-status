@@ -43,14 +43,19 @@
     <form method="post"
           action="{{ path('chess_game_comment') }}"
     >
-        Comment:
-        <textarea name="content"></textarea>
-        <br>
-        <input type="submit">
+        <textarea name="content" rolws="2" cols="50"></textarea>
+        <input type="submit" value="post comment">
     </form>
-    <hr>
     {% endif %}
     {# -------- only show form to a logged in user ----------------#}
+
+
+    {% for comment in comments %}
+        <li>{{ comment.message }} - posted by {{ comment.author }}</li>
+    {% else %}
+        (no commments)
+    {% endfor %}
+    <hr>
 
     <table class="table">
         <thead>

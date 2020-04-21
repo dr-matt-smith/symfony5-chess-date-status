@@ -103,10 +103,8 @@ class ChessGameController extends AbstractController
     /**
      * @Route("/", name="chess_game_index", methods={"GET"})
      */
-    public function index(ChessGameRepository $chessGameRepository): Response
+    public function index(ChessGameRepository $chessGameRepository, CommentRepository $commentRepository): Response
     {
-
-
         // ensure a date in session ...
         $date = $this->getDateFromSession();
         $this->setDateInSesson($date);
@@ -114,6 +112,7 @@ class ChessGameController extends AbstractController
         $template = 'chess_game/index.html.twig';
         $args = [
             'chess_games' => $chessGameRepository->findAll(),
+            'comments' => $commentRepository->findAll(),
         ];
 
         return $this->render($template, $args);

@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\ChessGame;
+use App\Entity\Comment;
 use App\Form\ChessGameType;
 use App\Repository\ChessGameRepository;
+use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +24,33 @@ class ChessGameController extends AbstractController
     {
         $this->session = $session;
     }
+
+
+
+    /**
+     * @Route("/comment", name="chess_game_comment", methods={"POST"})
+     */
+    public function processComment(): Response
+    {
+        $content = filter_input(INPUT_POST, 'content');
+
+        $user = $this->getUser();
+
+        $comment = new Comment();
+        $comment->setAuthor($user);
+        $comment->setMessage($content);
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($comment);
+        $entityManager->flush();
+
+
+
+
+        return $this->redirectToRoute('chess_game_index');
+    }
+
 
 
     private function getDateFromSession()
@@ -74,6 +103,12 @@ class ChessGameController extends AbstractController
      */
     public function index(ChessGameRepository $chessGameRepository): Response
     {
+
+
+        // ensure a date in session ...
+        $date = $this->getDateFromSession();
+        $this->setDateInSesson($date);
+
         $template = 'chess_game/index.html.twig';
         $args = [
             'chess_games' => $chessGameRepository->findAll(),

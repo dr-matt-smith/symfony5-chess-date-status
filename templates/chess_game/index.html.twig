@@ -27,12 +27,25 @@
 
 
 {% block body %}
+    {% set today = app.session.get("today") %}
+
 
     <h1>ChessGame index : {{ today|date("d-m-Y = l F d Y ") }}</h1>
 
     <a class="btn btn-primary" href="{{ path('chess_game_date_decrement') }}" role="button">date--</a>
     <a class="btn btn-primary" href="{{ path('chess_game_date_today') }}" role="button">date = today</a>
     <a class="btn btn-primary" href="{{ path('chess_game_date_increment') }}" role="button">date++</a>
+
+    <hr>
+    <form method="post"
+          action="{{ path('chess_game_comment') }}"
+    >
+        Comment:
+        <textarea name="content"></textarea>
+        <br>
+        <input type="submit">
+    </form>
+    <hr>
 
     <table class="table">
         <thead>
@@ -54,7 +67,6 @@
                 <td>BLACK: {{ chess_game.player2Black}}</td>
                 <td>
 
-                    {% set today = app.session.get("today") %}
 
                     {# ----------- if completed is TRUE, status = completed -------- #}
                     {% if chess_game.completed %}
@@ -87,4 +99,7 @@
     </table>
 
     <a href="{{ path('chess_game_new') }}">Create new</a>
+
+
+
 {% endblock %}
